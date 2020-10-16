@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>OrderMol</title>
+{% endblock %}
+
+{% block body %}
+<br>
+<br>
+<h2>Explore SARS-CoV-2 Potential Drugs <A href="https://www.ebi.ac.uk/chembl/g/#browse/compounds/filter/_metadata.compound_records.src_id%3A52" target="_blank">Database</A></h2>
+
+<hr>
+<form action="/explore" method="POST" enctype="multipart/form-data">
+
+    <input type="submit" value="Order!">
+    <br>
+    <br>
+
+    <h5>Molecular Weight</h5>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active">
+            <input type="radio" name="radio1" id="m1" value="Any" autocomplete="off" checked>Any
+          </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio1" id="m2" value="Large" autocomplete="off">Large
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio1" id="m3" value="Medium" autocomplete="off">Medium
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio1" id="m4" value="Small" autocomplete="off">Small
+        </label>
+    </div>
+    <br>
+    <br>
+    <h5>Bond</h5>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active">
+            <input type="radio" name="radio2" id="b1" value="Any" autocomplete="off" checked>Any
+          </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio2" id="b2" value="Thick" autocomplete="off">Thick
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio2" id="b3" value="Thin" autocomplete="off">Thin
+        </label>
+    </div>
+    <br>
+    <br>
+    <h5>Frame</h5>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active">
+            <input type="radio" name="radio3" id="f1" value="Any" autocomplete="off" checked>Any
+          </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio3" id="f2" value="Hard" autocomplete="off">Hard
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio3" id="f3" value="Soft" autocomplete="off">Soft
+        </label>
+    </div>     
+    <br>
+    <br>
+    <h5>Aroma</h5>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active">
+            <input type="radio" name="radio4" id="a1" value="Any" autocomplete="off" checked>Any
+          </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio4" id="a2" value="Strong" autocomplete="off">Strong
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio4" id="a3" value="Weak" autocomplete="off">Weak
+        </label>
+    </div>
+    <br>
+    <br>
+    <h5>Alipha</h5>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active">
+            <input type="radio" name="radio5" id="c1" value="Any" autocomplete="off" checked>Any
+          </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio5" id="c2" value="Strong" autocomplete="off">More
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio5" id="c3" value="Weak" autocomplete="off">Less
+        </label>
+    </div>
+    <br>
+    <br>
+    <h5>Hetero</h5>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active">
+            <input type="radio" name="radio6" id="h1" value="Any" autocomplete="off" checked>Any
+          </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio6" id="h2" value="More" autocomplete="off">More
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="radio6" id="h3" value="Less" autocomplete="off">Less
+        </label>
+    </div>
+
+</form>
+<hr>
+
+{% endblock %}
+<!--former input form-->
+    <h3>分子量:</h3>
+    <div>
+        <label for="m1">大盛</label>
+        <input type="radio" id="m1" name="radio1" value="大盛">
+    </div>
+    <div>
+        <label for="m2">並盛</label>
+        <input type="radio" id="m2" name="radio1" value="並盛">
+    </div>
+    <div>
+        <label for="m3">小盛</label>
+        <input type="radio" id="m3" name="radio1" value="小盛">
+    </div>
+    <div>
+        <label for="m4">おまかせ</label>
+        <input type="radio" id="m4" name="radio1" value="おまかせ" checked="checked">
+    </div>
+
+
+    <h3>結合:</h3>
+    <div>
+        <label for="b1">太め</label>
+        <input type="radio" id="b1" name="radio2" value="太め">
+    </div>
+    <div>
+        <label for="b2">細め</label>
+        <input type="radio" id="b2" name="radio2" value="細め">
+    </div>
+    <div>
+        <label for="b3">おまかせ</label>
+        <input type="radio" id="b3" name="radio2" value="おまかせ" checked="checked">
+    </div>
+
+    <h3>骨格:</h3>
+    <div>
+        <label for="f1">固め</label>
+        <input type="radio" id="f1" name="radio3" value="固め">
+    </div>
+    <div>
+        <label for="f2">柔らかめ</label>
+        <input type="radio" id="f2" name="radio3" value="柔らかめ">
+    </div>
+    <div>
+        <label for="f3">おまかせ</label>
+        <input type="radio" id="f3" name="radio3" value="おまかせ" checked="checked">
+    </div>
+
+    <h3>芳香:</h3>
+    <div>
+        <label for="a1">濃いめ</label>
+        <input type="radio" id="a1" name="radio4" value="濃いめ">
+    </div>
+    <div>
+        <label for="a2">薄め</label>
+        <input type="radio" id="a2" name="radio4" value="薄め">
+    </div>
+    <div>
+        <label for="a3">おまかせ</label>
+        <input type="radio" id="a3" name="radio4" value="おまかせ" checked="checked">
+    </div>
+
+    <h3>脂肪:</h3>
+    <div>
+        <label for="c1">多め</label>
+        <input type="radio" id="c1" name="radio5" value="多め">
+    </div>
+    <div>
+        <label for="c2">少なめ</label>
+        <input type="radio" id="c2" name="radio5" value="少なめ">
+    </div>
+    <div>
+        <label for="c3">おまかせ</label>
+        <input type="radio" id="c3" name="radio5" value="おまかせ" checked="checked">
+    </div>
+
+    <h3>ヘテロ:</h3>
+    <div>
+        <label for="h1">多め</label>
+        <input type="radio" id="h1" name="radio6" value="多め">
+    </div>
+    <div>
+        <label for="h2">少なめ</label>
+        <input type="radio" id="h2" name="radio6" value="少なめ">
+    </div>
+    <div>
+        <label for="h3">おまかせ</label>
+        <input type="radio" id="h3" name="radio6" value="おまかせ" checked="checked">
+    </div>

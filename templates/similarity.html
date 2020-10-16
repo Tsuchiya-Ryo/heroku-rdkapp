@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Similarity</title>
+{% endblock %}
+
+
+{% block body %}
+<br>
+<br>
+<h2>Compare Your Molecules</h2>
+
+{% if message != None %}
+{{message}}
+{% endif %}
+<hr>
+<h4>By SMILES or InChI</h4>
+<p><a href="https://cactus.nci.nih.gov/translate/" target="_blank">get smiles from structure</a></p>
+<p>InChI form must start from "InChI = ..."<br>
+    Extra line break or whitespace causes error.</p>
+<p><b>this shows similarity map based on "Molecule_A"</b></p>
+<form action="/similarity" method="POST">
+    <p>Molecule_A (base molecule)</p>
+    <textarea class="form-control" type="text" name="smilesA" id="smilesA" placeholder="Enter SMILES or InChI" aria-label="Enter SMILES or InChI" rows="3"></textarea>
+    <br>
+    <p>Molecule_B</p>
+    <textarea class="form-control" type="text" name="smilesB" id="smilesB" placeholder="Enter SMILES or InChI" aria-label="Enter SMILES or InChI" rows="3"></textarea>
+    <br>
+    #Bit images  <input type="number" name="number" value="9" min="1" max="2048">
+    <br>
+    #Bit images per row  <input type="number" name="perrow" value="3" min="1" max="6">
+    <br>
+    <br>
+    <input type="submit" value="GO">
+    <br>
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}

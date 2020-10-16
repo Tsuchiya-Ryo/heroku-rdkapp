@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Check Result</title>
+{% endblock %}
+
+
+{% block body %}
+
+<br>
+<h2>Check Result:</h2>
+<br>
+{% for key in comment.keys() %}
+<p><b>{{key}}</b>:<br>{{comment[key]}}</p>
+{% endfor %}
+<br>
+<img src="{{url_for('static', filename=image)}}" width="300" height="300"/>
+<!-- <img src="{{url_for('static', filename=timage)}}" width="300" height="300"/> -->
+{% if not types_dict == None %}
+<p><b>Atom Types</b>:</p>
+<p>{{types_dict}}</p>
+{% endif %}
+
+<table class="table table-sm">
+    <tr><th>Mark</th><th>Atom Type</th></tr>
+    <tr><td>CAT</td><td>Cation</td></tr>
+    <tr><td>ANI</td><td>Anion</td></tr>
+    <tr><td>DON</td><td>Neutral Hydrogen Bond Donor</td></tr>
+    <tr><td>ACC</td><td>Neutral Hydrogen Bond Acceptor</td></tr>
+    <tr><td>POL</td><td>Polar Atom</td></tr>
+    <tr><td>HYD</td><td>Hydrophobic Atom</td></tr>
+    <tr><td>OHT</td><td>Other</td></tr>
+</table>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr><th>Description</th><th>Value</th></tr>
+    </thead>
+    <tr><td>Molecular Weight</td><td>{{spec["MolWt"]}}</td></tr>
+    <tr><td>#Rotatable Bonds</td><td>{{spec["RotBond"]}}</td></tr>
+    <tr><td>#Aromatic Atoms</td><td>{{spec["AromaticAtom"]}}</td></tr>
+    <tr><td>#Hetero Atoms</td><td>{{spec["HeteroAtom"]}}</td></tr>
+    <tr><td>#Single/Double/Triple Bonds(kekulized form)</td><td>{{spec["SingleBond"]}} / {{spec["DoubleBond"]}} / {{spec["TripleBond"]}}</td></tr>
+    <tr><td>#Calculated Hydrogen Bond Acceptors/Donors</td><td>{{spec["HA"]}} / {{spec["HD"]}}</td></tr>
+    <tr><td>Fraction of SP3 Cabon</td><td>{{spec["FracSP3"]}}</td></tr>
+    <tr><td>LogP</td><td>{{spec["LogP"]}}</td></tr>
+    <tr><td>TPSA</td><td>{{spec["TPSA"]}}</td></tr>
+</table>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr>
+<h4>By SMILES or InChI</h4>
+<p><a href="https://cactus.nci.nih.gov/translate/" target="_blank">get smiles from structure</a></p>
+<p>InChI form must start from "InChI = ..."<br>
+    Extra line break or whitespace causes error.</p>
+<form action="/check" method="POST">
+    <textarea class="form-control" type="text" name="smiles" id="smiles" placeholder="Enter SMILES or InChI" aria-label="Enter SMILES or InChI" rows="3"></textarea>
+    <br>
+    <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="s1" name="standardize" value="On">
+        <label class="custom-control-label" for="s1">Standardize(desalt and neutralize)</label>
+    </div>    
+    <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="g1" name="gasteiger" value="On">
+        <label class="custom-control-label" for="g1">GasteigerCharge Mapping</label>
+    </div>
+    <!-- <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="as_table1" name="as_table" value="On">
+        <label class="custom-control-label" for="as_table1">Types and Charge Values on Structure</label>
+    </div> -->
+
+    <label for="3">#digits</label>
+    <select id="3" name="digits">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <br>
+    <br>
+    <input type="submit" value="GO">
+</form>
+<br>
+<hr>
+<h4>By Compound Name </h4>
+<form action="/checkname" method="POST">
+    <input class="form-control" type="text" name="name" id="name" placeholder="Enter Name" aria-label="Enter Name">
+    <br>
+    <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="s2" name="standardize" value="On">
+        <label class="custom-control-label" for="s2">Standardize(desalt and neutralize)</label>
+    </div>    
+    <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="g2" name="gasteiger" value="On">
+        <label class="custom-control-label" for="g2">GasteigerCharge Mapping</label>
+    </div>
+    <!-- <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="as_table2" name="as_table" value="On">
+        <label class="custom-control-label" for="as_table2">Types and Charge Values on Structure</label>
+    </div> -->
+    <label for="3">#digits</label>
+    <select id="3" name="digits">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+
+    <br>
+    <br>
+    <input type="submit" value="GO">
+</form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br> 
+{% endblock %}

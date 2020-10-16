@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>About</title>
+{% endblock %}
+
+{% block body %}
+<br>
+<br>
+<h2>About</h2>
+<hr>
+<!--<h4>DB Query and Calculation Detail</h4>-->
+<p>RDKit version: 2020.03.01</p>
+<p>Checking by name: Steric information is ignored. Using PubChemPy api and picking the first molecule.</p>
+<p>Gasteiger Charge: `rdkit.Chem.rdmolops.RemoveHs` applied.</p>
+<p>LogP: MolLogP(<a href="https://pubs.acs.org/doi/10.1021/ci990307l" target="_blank">ALOGP98</a>)</p>
+<p>Similarity: Based on Morganfingerprint(length=2048 bits, radius=2).</p>
+<br>
+<br>
+<div align="right">
+<p><a href="https://github.com/Tsuchiya-Ryo/heroku-rdkapp" target="_blank">All codes of this site</a></p>
+</div>
+<br>
+{% endblock %}

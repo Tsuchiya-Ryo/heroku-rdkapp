@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Similarity_result</title>
+{% endblock %}
+
+
+{% block body %}
+<br>
+<h2>Similarity Result</h2>
+<br>
+{% for mol in comment.keys() %}
+<p>{{mol}}:<br>{{comment[mol]}}</p>
+{% endfor %}
+<br>
+<figure>
+    <figcaption><b>Structures</b></figcaption>
+<img src="{{url_for('static', filename=molsimage)}}"/>
+</figure>
+<br>
+<br>
+{% if not simimage == None %}
+<figrue>
+    <figcaption><b>Similarity Map on Molecule_A</b><br>(visualize atoms' contributions to similarity)</figcaption>
+    <img src="{{url_for('static', filename=simimage)}}" width="400" height="400"/>
+</figrue>
+{% endif %}
+<br>
+<br>
+<figrue>
+    <figcaption><b>Common Partial Structure</b></figcaption>
+    <img src="data:;base64,{{bitimage}}"/>
+</figrue>
+
+<br>
+<br>
+<b>{{coefs}}</b>
+<br>
+<br>
+{% for key in bits.keys() %}
+<p>{{key}}<br>{{bits[key]}}</p>
+{% endfor %}
+
+<table class="table">
+    <thead class="thead-light">
+        <tr><th></th><th>MoleculeA</th><th>MoleculeB</th></tr>
+    </thead>
+    <tr><td>Molecular Weight</td><td>{{specA["MolWt"]}}</td><td>{{specB["MolWt"]}}</td></tr>
+    <tr><td>#Rotatable Bonds</td><td>{{specA["RotBond"]}}</td><td>{{specB["RotBond"]}}</td></tr>
+    <tr><td>#Aromatic Atoms</td><td>{{specA["AromaticAtom"]}}</td><td>{{specB["AromaticAtom"]}}</td></tr>
+    <tr><td>#Hetero Atoms</td><td>{{specA["HeteroAtom"]}}</td><td>{{specB["HeteroAtom"]}}</td></tr>
+    <tr><td>#Single/Double/Triple Bonds(kekulized form)</td><td>{{specA["SingleBond"]}} / {{specA["DoubleBond"]}} / {{specA["TripleBond"]}}</td><td>{{specB["SingleBond"]}} / {{specB["DoubleBond"]}} / {{specB["TripleBond"]}}</td></tr>
+    <tr><td>#Calculated Hydrogen Bond Acceptors/Donors</td><td>{{specA["HA"]}} / {{specA["HD"]}}</td><td>{{specB["HA"]}} / {{specB["HD"]}}</td></tr>
+    <tr><td>Fraction of SP3 Cabon</td><td>{{specA["FracSP3"]}}</td><td>{{specB["FracSP3"]}}</td></tr>
+    <tr><td>LogP</td><td>{{specA["LogP"]}}</td><td>{{specB["LogP"]}}</td></tr>
+    <tr><td>TPSA</td><td>{{specA["TPSA"]}}</td><td>{{specB["TPSA"]}}</td></tr>
+</table>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr>
+<h4>By SMILES or InChI</h4>
+<p><a href="https://cactus.nci.nih.gov/translate/" target="_blank">get smiles from structure</a></p>
+<p>InChI form must start from "InChI = ..."<br>
+    Extra line break or whitespace causes error.</p>
+<form action="/similarity" method="POST">
+    <p>Molecule_A</p>
+    <textarea class="form-control" type="text" name="smilesA" id="smilesB" placeholder="Enter SMILES or InChI" aria-label="Enter SMILES or InChI" rows="3"></textarea>
+    <br>
+    <p>Molecule_B</p>
+    <textarea class="form-control" type="text" name="smilesB" id="smilesB" placeholder="Enter SMILES or InChI" aria-label="Enter SMILES or InChI" rows="3"></textarea>
+    <br>
+    #Bit images  <input type="number" name="number" value="9" min="1" max="2048">
+    <br>
+    #Bit images per row  <input type="number" name="perrow" value="3" min="1" max="6">
+    <br>
+    <br>
+    <input type="submit" value="GO">
+    <br>
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}

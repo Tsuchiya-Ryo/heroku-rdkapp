@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>CheckMol</title>
+{% endblock %}
+
+
+{% block body %}
+<br>
+{% if message != None %}
+<h3 style="color:red">{{message}}</h3>
+<hr>
+{% endif %}
+<br>
+<h2>Check Your Molecule</h2>
+<hr>
+<h4>By SMILES or InChI</h4>
+<p><a href="https://cactus.nci.nih.gov/translate/" target="_blank">get smiles from structure</a></p>
+<p>InChI form must start from "InChI = ..."<br>
+   Extra line break or whitespace causes error.</p>
+<form action="/check" method="POST">
+    <textarea class="form-control" type="text" name="smiles" id="smiles" placeholder="Enter SMILES or InChI" aria-label="Enter SMILES or InChI" rows="3"></textarea>
+    <br>
+    <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="s1" name="standardize" value="On">
+        <label class="custom-control-label" for="s1">Standardize(desalt and neutralize)</label>
+    </div>
+    <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="g1" name="gasteiger" value="On">
+        <label class="custom-control-label" for="g1">GasteigerCharge Mapping</label>
+    </div>
+    <!-- <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="as_table1" name="as_table" value="On">
+        <label class="custom-control-label" for="as_table1">Types and Charge Values on Structure</label>
+    </div> -->
+
+    <label for="3">#digits</label>
+    <select id="3" name="digits">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <br>
+    <br>
+    <input type="submit" value="GO">
+</form>
+<br>
+<hr>
+<h4>By Compound Name </h4>
+<form action="/checkname" method="POST">
+    <input class="form-control" type="text" name="name" id="name" placeholder="Enter Name" aria-label="Enter Name">
+    <br>
+    <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="s2" name="standardize" value="On">
+        <label class="custom-control-label" for="s2">Standardize(desalt and neutralize)</label>
+    </div>    
+    <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="g2" name="gasteiger" value="On">
+        <label class="custom-control-label" for="g2">GasteigerCharge Mapping</label>
+    </div>
+    <!-- <div class="custom-control custom-checkbox checkbox-lg">
+        <input type="checkbox" class="custom-control-input" id="as_table2" name="as_table" value="On">
+        <label class="custom-control-label" for="as_table2">Types and Charge Values on Structure</label>
+    </div> -->
+    <label for="3">#digits</label>
+    <select id="3" name="digits">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+
+    <br>
+    <br>
+    <input type="submit" value="GO">
+</form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br> 
+
+{% endblock %}
+
+
+<label for="s">Off</label>
+<input type="radio" id="a" name="standardize" value="Off" checked="checked">
+<label for="s1">On</label>
+<input type="radio" id="b" name="standardize" value="On">
+<br>

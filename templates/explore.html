@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>explore</title>
+{% endblock %}
+
+
+{% block body %}
+
+<br>
+<h2>Result</h2>
+<hr>
+
+<table class="table table-borderless">
+    <tr><th>Your Order Was...</th></tr>
+    <tr><td>MolWt: {{comment["MolWt"]}}</td><td>Aroma: {{comment["Aromaticity"]}}</td></tr>
+    <tr><td>Bond: {{comment["Bonds"]}}</td><td>Alipha: {{comment["Aliphaticity"]}}</td></tr>
+    <tr><td>Frame: {{comment["Frame"]}}</td><td>Hetero: {{comment["Hetero"]}}</td></tr>
+</table>
+<hr>
+<br>
+<figure>
+<figcaption><p>{{posts.Cid}}</p></figcaption>
+<img src="{{url_for('static', filename=image)}}" width="250" height="250"/>
+</figure>
+<br>
+<hr>
+<br>
+<table class="table">
+    <thead class="thead-light">
+        <tr><th>Description</th><th>Value</th></tr>
+    </thead>
+    <tr><td>Molecular Weight</td><td>{{posts.Molwt}}</td></tr>
+    <tr><td>#Single/Double/Triple Bonds</td><td>{{posts.Singlebond}} / {{posts.Doublebond}} / {{posts.Triplebond}}</td></tr>
+    <tr><td>#Rotatable Bonds</td><td>{{posts.Rotbond}}</td></tr>
+    <tr><td>#Aromatic Atoms</td><td>{{posts.Aratom}}</td></tr>
+    <tr><td>#Hetero Atoms</td><td>{{posts.Heteroatom}}</td></tr>
+    <!-- <tr><td>Fraction of Double and Triple Bonds</td><td>{{posts.Fbond}}</td></tr>
+    <tr><td>Fraction of Rotatable Bonds</td><td>{{posts.Frbond}}</td></tr>
+    <tr><td>Fraction of Aromatic Atoms</td><td>{{posts.Faratom}}</td></tr>
+    <tr><td>Fraction of Sp3 Carbons</td><td>{{posts.Fsp3carb}}</td></tr>
+    <tr><td>Fraction of Hetero Atoms</td><td>{{posts.Fhetero}}</td></tr> -->
+</table>
+<br>
+<h5>Show details on <A href={{posts.Impath}} target="_blank">ChEMBL</A></h5>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+{% endblock %}
+<!--<img src="data:;base64,{{image}}"/ width="250" height="250">-->
