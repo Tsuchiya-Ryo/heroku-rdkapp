@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Summarize</title>
+{% endblock %}
+
+
+{% block body %}
+<br>
+<br>
+<h2>Summerize Your Molecules</h2>
+<hr>
+<h4>Put SDF file</h4>
+
+<form action="/summerize" method="POST">
+    <input type="file" name="file" accept=".sdf">
+    <input type="submit" value="GO">
+    <br>
+</form>
+
+{% endblock %}

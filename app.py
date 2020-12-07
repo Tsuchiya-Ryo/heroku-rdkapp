@@ -9,12 +9,155 @@ from my_modules import random_string, label, calc_specs, calc_gasteiger, type_ma
      label_mapping, standardize, smiles_or_inchi, calc_bits, similarity_map, grid_image
 from datetime import datetime
 
+#--------------------------------------------------------------------------------------------------------------------------------
+import io
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import dash_dangerously_set_inner_html as dhtml
+import dash_table
+from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
+ 
+import argparse
+from rdkit.Chem import Descriptors, AllChem, DataStructs, Draw
+from rdkit.Chem.Draw import rdDepictor
+import plotly.graph_objs as go
 
+#---------------------------------------------------------------------------------------------------------------------------------
 
 app = Flask(__name__, static_folder="tempimage")
-app.config["SQLALCHEMY_DATABASE_URI"] = "<DATABASE_URI>"
+app.config["SQLALCHEMY_DATABASE_URI"] = "<YOUR_DATABASE_URI>"
 #APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 db = SQLAlchemy(app)
+
+#---------------------------------------------------------------------------------------------------------------------------------
+descdict = dict(Descriptors._descList)
+DisplayItems = ["MolWt","HeavyAtomMolWt","ExactMolWt","HeavyAtomCount","FractionCSP3","NumHAcceptors",\
+    "NumHDonors","NumHeteroatoms","NumRotatableBonds","NumAromaticRings","MolLogP","TPSA"]
+descdict = {k: v for k, v in descdict.items() if k in DisplayItems}
+ 
+app_dash = dash.Dash(__name__, server=app, url_base_pathname="/sdfplotly/", external_stylesheets=[dbc.themes.BOOTSTRAP])
+ 
+css_directory = os.getcwd()+'/static/'
+stylesheets = ['bWLwgP.css']
+static_css_route = '/static/'
+ 
+def smi2svg(smi):
+    mol = Chem.MolFromSmiles(smi)
+    rdDepictor.Compute2DCoords(mol)
+    mc = Chem.Mol(mol.ToBinary())
+    Chem.Kekulize(mc)
+    drawer = Draw.MolDraw2DSVG(300,300)
+    drawer.DrawMolecule(mc)
+    drawer.FinishDrawing()
+    svg = drawer.GetDrawingText().replace('svg:','')
+    return svg
+ 
+def parse_contents(contents):
+    content_type, content_string = contents.split(',')
+    decoded = base64.b64decode(content_string)
+    with open('./static/temp.sdf', 'w') as f:
+        f.write(decoded.decode('utf-8'))
+    mols = [mol for mol in Chem.SDMolSupplier('./static/temp.sdf')]
+    return mols
+ 
+app_dash.layout = dbc.Container(children=[
+
+    dbc.Navbar(dark=True, color="dark",
+    children=[dbc.NavbarBrand(html.A("Home", href="/"), className="ml-2"),
+                          dbc.NavLink(html.A("Database", href="/explore")),
+                          dbc.NavLink(html.A("Check", href="/check")),
+                          dbc.NavLink(html.A("Similarity", href="/similarity")),
+                          dbc.NavLink(html.A("About", href="/about"))
+    ],),
+
+# ),
+    html.Br(),
+    html.H1(children='Summerize molecules'),
+    html.A("ref of this plot function", href="https://iwatobipen.wordpress.com/2019/02/16/make-interactive-dashboard-with-dash2-chemoinformatcs-rdkit/", target="_blank"),
+    dcc.Upload(
+        id='upload-data',
+        children=html.Div(
+            html.A('Upload sdf file')
+            ),
+            style={
+                    'width': '40%',
+                    'height': '30px',
+                    'lineHeight': '30px',
+                    'borderWidth': '1px',
+                    'borderStyle': 'solid',
+                    'borderRadius': '9px',
+                    'textAlign': 'center',
+                    'margin': '30px',
+                    "backgroundcolor":"blue"
+            },
+            multiple=True
+        ),
+     
+    html.Div([dcc.Dropdown(id='x-column',
+                           value='MolWt',
+                           options=[{'label': key, 'value': key} for key in descdict.keys()],
+                           style={'width':'50%', 'display':'inline-block'}),
+              dcc.Dropdown(id='y-column',
+                           value='MolLogP',
+                           options=[{'label': key, 'value': key} for key in descdict.keys()],
+                           style={'width':'50%', 'display':'inline-block'}),
+                           ]),
+    html.Div([
+        html.Div([dcc.Graph(id='example-graph')], className="eight columns")
+        ], className="row"),
+        html.Div([html.Div(id="molimg")], className="four columns",
+        style={"padding-bottom":"500px"}),
+    ])
+ 
+@app_dash.callback(
+    Output('example-graph', 'figure'),
+      
+    [Input('upload-data', 'contents'),
+     Input('x-column', 'value'),
+     Input('y-column', 'value')]
+)
+def update_graph(contents, x_column_name, y_column_name):
+    mols = parse_contents(contents[0])
+    for i, mol in enumerate(mols):
+        AllChem.Compute2DCoords(mol)
+    x = [descdict[x_column_name](mol) for mol in mols]
+    y = [descdict[y_column_name](mol) for mol in mols]
+
+    return {'data':[go.Scatter(
+        x=x,
+        y=y,
+        text=[Chem.MolToSmiles(mol) for mol in mols],
+        mode='markers',
+        marker={
+            'size':12,
+            'opacity':0.5
+        }
+    )],
+    'layout':go.Layout(
+        xaxis={'title':x_column_name},
+        yaxis={'title':y_column_name}
+    )}
+ 
+ 
+@app_dash.callback(
+    Output('molimg', 'children'),
+    [Input('example-graph', 'hoverData'),
+    ]
+)
+def update_img(hoverData1):
+    try:
+        svg = smi2svg(hoverData1['points'][0]['text'])
+        plotdata =  "({},{}) \n {}".format(round(hoverData1["points"][0]["x"],3), round(hoverData1["points"][0]["y"],3),hoverData1["points"][0]["text"])
+        # plotdata = plotdata
+        return dhtml.DangerouslySetInnerHTML(svg), plotdata
+    except:
+        svg = 'Select Datapoint'
+        return dhtml.DangerouslySetInnerHTML(svg)
+ 
+#--------------------------------------------------------------------------------------------------------------------------------
+
 
 ############# DEFINE DATABASE ########################################################
 
@@ -329,5 +472,12 @@ def similarity():
 def about():
     return render_template('about.html')
 
+########### DASH PLOTLY AREA ###########################################
+
+@app.route("/plotly")
+def render():
+    return redirect("/sdfplotly")
+
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host="0.0.0.0")
