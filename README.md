@@ -12,3 +12,6 @@ Input a molecule by SMILES, InChI or Compound Name and get some descriptions of 
 
 3. Compare Molecules\
 Input two molecules by SMILES or InChI and get similarity informations.
+
+4. Browse Molecules\
+Input sdf file and get a dash based interactive plot.
